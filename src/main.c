@@ -1,9 +1,8 @@
 /*
  * Copyright (c) 2018 Nordic Semiconductor ASA
  *
- * SPDX-License-Identifier: LicenseRef-BSD-5-Clause-Nordic
+ * SPDX-License-identifier: LicenseRef-BSD-5-Clause-Nordic
  */
-
 #include <zephyr.h>
 #include <stdio.h>
 #include <string.h>
@@ -12,12 +11,14 @@
 #include <device.h>
 #include <spi.h>
 #include <gpio.h>
-//#include <SD.h>
+#include <SD.h>
 
 struct device * gpio_dev;
 struct device * spi_dev;
-#define PIN1 0
-#define PIN2 1
+#define PIN1 2
+#define PIN2 3
+#define PIN4 18
+#define PIN5 19
 
 static void gpio_init(void)
 {
@@ -30,10 +31,8 @@ static void gpio_init(void)
   }
   printk("Successfully initialised %s device\n", gpioName);
  
-  if(gpio_pin_configure(gpio_dev, PIN1, GPIO_DIR_OUT) < 0)
-    printk("Could not configure pin P0.%02d\n", PIN1);
-  if(gpio_pin_configure(gpio_dev, PIN2, GPIO_DIR_OUT ) < 0)
-    printk("Could not configure pin P0.%02d\n", PIN2);
+  if(gpio_pin_configure(gpio_dev, CS_PIN, GPIO_DIR_OUT) < 0)
+    printk("Could not configure PIN P0.%02d\n", CS_PIN);
 }
 static void spi_init(void)
 {
@@ -48,33 +47,34 @@ static void spi_init(void)
 }
 void main(void)
 {
-  int i, j, k, result;
+  int i;
+  u64_t t0;
   printk("Application started\n");
   gpio_init();
   spi_init();
-  
-  
-  while (1) {
-      if (!gpio_pin_write(gpio_dev, PIN1, 1))
-        printf("1. P0.%02d : write 1\n", PIN1);
-      if (!gpio_pin_write(gpio_dev, PIN2, 1))
-        printf("2. P0.%02d : write 1\n", PIN2);
-      k_sleep(100000);
-      
-     // if (!gpio_pin_write(gpio_dev, PIN_OUT, 0))
-     //   printf("0 write\n");
-      //k_sleep(1000);
-//    spi_test_send();
-  //  
-/*
-    }s
-    k_sleep(1000);
-    
-    if (!gpio_pin_write(gpio_dev, PIN_OUT, 0)){
-      printf("0 write\n");
-      if (!gpio_pin_read(gpio_dev, PIN_IN, &result))
-        printf("Read : %d\n", result);
-    }*/
-  }
 
-}
+  //Initialize SD card.
+  init(0);
+  printf("Card type : ");
+  
+  switch (get_type()) {
+    case SD_CARD_TYPE_SD1:
+      printf("SD1\n");
+      break;
+    case SD_CARD_TYPE_SD2:
+      printf("SD2\n ");
+      break;
+    case SD_CARD_TYPE_SDHC:
+      printf("SDHC\n");
+      break;
+    default:
+      printf("Unknown\n");
+      break;
+  }
+  //i = 0;
+  //t0 = k_uptime_get();
+  while (1) {
+      //printf("%lld (Start : %lld)\n", k_uptime_get() - t0, t0);
+      //k_sleep(1000);
+   }
+ }
