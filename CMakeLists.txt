@@ -15,6 +15,7 @@ project(NONE)
 target_sources(app PRIVATE
 src/main.c
 #src/SD.c
+src/SdFat.c
 )
 # NORDIC SDK APP END
 zephyr_include_directories(src)
