@@ -8,9 +8,6 @@
 
 #define SD_PROTECT_BLOCK_ZERO 1
 
-
-
-
 u32_t block_ = 0;
 u8_t chipSelectPin_ = 0;
 u8_t errorCode_ = 0;

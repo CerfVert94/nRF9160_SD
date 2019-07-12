@@ -24,36 +24,25 @@ u8_t get_type(void);
 void set_error(u8_t code);
 
 
+
+
+void partialBlockRead(u8_t value);
 u8_t readBlock(u32_t block, u8_t* dst);
-//------------------------------------------------------------------------------
-/**
-   Read part of a 512 byte block from an SD card.
-
-   \param[in] block Logical block to be read.
-   \param[in] offset Number of bytes to skip at start of block
-   \param[out] dst Pointer to the location that will receive the data.
-   \param[in] count Number of bytes to read
-   \return The value one, true, is returned for success and
-   the value zero, false, is returned for failure.
-*/
 u8_t readData(u32_t block, u16_t offset, u16_t count, u8_t* dst);
-//------------------------------------------------------------------------------
-/** Skip remaining data in a block when in partial block read mode. */
 void readEnd(void);
-//------------------------------------------------------------------------------
-/** Wait for start block token */
-u8_t waitStartBlock(void);
-
 
 u8_t waitStartBlock(void);
-
-
-//------------------------------------------------------------------------------
-/** Write one data block in a multiple block write sequence */
-//u8_t writeBlock(const u8_t* src);
 u8_t writeData(u8_t token, const u8_t* src);
 u8_t writeStart(u32_t blockNumber, u32_t eraseCount);
-u8_t writeStop(void);
+u8_t writeStop(void) ;
+u8_t writeBlock(u32_t blockNumber, const u8_t* src) ;
+
+
+
+
+
+
+
 //------------------------------------------------------------------------------
 /** Protect block zero from write if nonzero */
 #define SD_PROTECT_BLOCK_ZERO 1
