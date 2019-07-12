@@ -94,7 +94,19 @@ void main(void)
   if(!openRoot()) {
     printf("Failed opening root\n");
   }
-  ls(4 | 2);
+  ls(4 | 2, 0);
+  //sdfile_close();
+   
+  if(sdfile_open("test.txt", 0x01)) {
+    while ((fileSize() - curPosition()  > 0X7FFF) ? 0X7FFF : (fileSize() - curPosition())) {
+      printf("%c", sdfile_read_byte());
+    }
+    printf("\n");
+   }
+   else {
+  printf("Failed opening.\n");
+   }
+  sdfile_close();
   printf("Succesful Operations.\n");
   while (1) {
       //printf("%lld (Start : %lld)\n", k_uptime_get() - t0, t0);

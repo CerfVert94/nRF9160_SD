@@ -170,10 +170,8 @@ static u32_t cacheMirrorBlock_ = 0;  // block number for mirror FAT
     u32_t blockNumber(u32_t cluster, u32_t position);
     
     static u8_t cacheRawBlock(u32_t blockNumber, u8_t action);
-    /*static void cacheSetDirty(void) {
-      cacheDirty_ |= CACHE_FOR_WRITE;
-    }
-    static u8_t cacheZeroBlock(u32_t blockNumber);*/
+    static void cacheSetDirty(void);
+    static u8_t cacheZeroBlock(u32_t blockNumber);
     u8_t chainSize(u32_t beginCluster, u32_t* size);
     u8_t fatGet(u32_t cluster, u32_t* value);
     u8_t fatPut(u32_t cluster, u32_t value);
@@ -215,6 +213,14 @@ static u8_t   dirIndex_;  // index of entry in dirBlock 0 <= dirIndex_ <= 0XF
 static u32_t  fileSize_;  // file size in bytes
 static u32_t  firstCluster_;  // first cluster of file
 
+u8_t   flags(); // See above for definition of flags_ bits
+u8_t   type();  // type of file see above for values
+u32_t  curCluster();// cluster for current file position
+u32_t  curPosition();   // current file position in bytes from beginning
+u32_t  dirBlock();  // SD block that contains directory entry for file
+u8_t   dirIndex();  // index of entry in dirBlock 0 <= dirIndex_ <= 0XF
+u32_t  fileSize();  // file size in bytes
+u32_t  firstCluster();  // first cluster of file
 //static void (*dateTime_)(u16_t* date, u16_t* time);
 // flags for ls()
 /** ls() flag to print modify date */
@@ -332,12 +338,12 @@ static inline u8_t FAT_SECOND(u16_t fatTime) {
     */u8_t addCluster(void);
 u8_t addDirCluster(void);
 dir_t* cacheDirEntry(u8_t action);
-//static u8_t make83Name(const char* str, u8_t* name);
-//u8_t openCachedEntry(u8_t cacheIndex, u8_t oflags);
+static u8_t make83Name(const char* str, u8_t* name);
+u8_t openCachedEntry(u8_t cacheIndex, u8_t oflags);
 dir_t* readDirCache(void);
 
     void clearUnbufferedRead(void);
-    u8_t close(void);
+    u8_t sdfile_close(void);
     u8_t contiguousRange(u32_t* bgnBlock, u32_t* endBlock);
     /*u8_t createContiguous(SdFile* dirFile,
                              const char* fileName, u32_t size);*/
@@ -409,8 +415,8 @@ dir_t* readDirCache(void);
     u8_t isRoot();
     void ls(u8_t flags, u8_t indent);
     //u8_t makeDir(SdFile* dir, const char* dirName);
-    //u8_t open(SdFile* dirFile, u16_t index, u8_t oflag);
-    //u8_t open(SdFile* dirFile, const char* fileName, u8_t oflag);
+    //u8_t open(u16_t index, u8_t oflag);
+    bool sdfile_open(const char* fileName, u8_t oflag);
 
     //u8_t openRoot(SdVolume* vol);
     static void printDirName(dir_t dir, u8_t width);
