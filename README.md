@@ -8,5 +8,5 @@ But as long as the SPI protocol can be accordingly modified, it can be used for 
 For a fast implementation, the code was written without any consideration in regards to readability or whatever it helps readers to understand the code.<br>
 Write functionality is unsupported as well.<br>
 
-It urgently needs a refactoring, a clean-up and pinout description to make understand how it works,<br>
+It urgently needs a refactoring, a clean-up and pinout description to help understand how it works,<br>
 but this is unlikely to happen as the author doesn't have the microcontroller to test it in his possession anymore.<br>
